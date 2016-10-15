@@ -299,8 +299,17 @@ Copy.
 
 Anyway, back to the code: what went wrong? In our first iteration, we were
 actually *copying* the i32 `elem` when we assigned to result, so the node was
-left unscathed for the next operation. Now we're *moving* the `next` value
-(which isn't Copy), and that consumes the whole Box before we can get to `elem`.
+left unscathed for the next operation. 
+
+Now we're *moving* the `next` value (which isn't Copy), and that consumes the whole Box before we can get to `elem`. So after the `match ...`  we have:
+
+![](images/pop-linted-move-match.png)
+
+and after `self.head = node.next;` we get:
+
+![](images/pop-linted-move.png)
+
+The node which contains the elem we wanted to access is gone. Oops.
 
 Now, we could just rearrange again to get `elem` first, but we're only using
 i32 as a placeholder for *some* data. Later we'll want to work with non-Copy
