@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+
+mkdir src
+
+for f in text/*.md; do
+  echo $f
+  sed 's/^% /# /' $f > src/$(basename $f)
+  git rm $f
+done
+
+git add src
+mv text/* src
+rm -rf text
+# git commit -m "converted to mdbook"
